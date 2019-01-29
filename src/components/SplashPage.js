@@ -22,8 +22,30 @@ const styles = theme => ({
       flexGrow: 1,
       flexDirection: 'column'
     },
+    content: {
+      flexGrow: 1,
+      paddingLeft: theme.spacing.unit * 7, 
+      paddingTop: theme.spacing.unit * 9, 
+      paddingBottom:  theme.spacing.unit * 4, 
+      height: '100vh',
+      overflow: 'auto',
+    },
     GridRoot: {
+        display: 'flex',
         flexGrow: 1,
+        flexDirection:"row",
+    },
+    mapGridContainer :{
+      margin: '0px',
+      display: 'block',
+      flexGrow: 4,
+      width: 'auto',
+    },
+    chartsGridContainer :{
+      margin: '0px',
+      flexGrow: 2,
+      display: 'block',
+      width: 'auto',
     },
     toolbar: {
         paddingRight: 24, // keep right padding when drawer closed
@@ -42,8 +64,11 @@ const styles = theme => ({
           duration: theme.transitions.duration.leavingScreen,
         }),
       },
+    mainList : {
+      paddingTop: '72px',
+    },
     appBarSpacer: {
-        minHeight: '82px'
+        minHeight: '10px'
       },
     menuButton: {
         marginLeft: 12,
@@ -70,9 +95,9 @@ const styles = theme => ({
         textAlign: 'center',
         color: theme.palette.text.secondary,
       },
-    mapGrid: {
-        position: 'relative',
-        bottom: '74.5px',
+    chartGridItem: {
+      width: '100%',
+      minWidth: '100%',
       },
   });
 
@@ -109,25 +134,26 @@ class SplashPage extends Component {
             }}
             open={this.state.open}>
             <Divider />
-            <List>{mainListItems}</List>
-            <Divider />
-            <List>{secondaryListItems}</List>
-        </Drawer>
-        <div className={classes.GridRoot}>
-      <Grid container spacing={24} justify='flex-end' wrap='wrap-reverse'>
-        <Grid item xs={7} className={classes.mapGrid}>
+            <List className={classes.mainList}>{mainListItems}</List>
+        </Drawer> 
+      <div className={classes.GridRoot}>
+      <Grid container spacing={24} className={classes.mapGridContainer}> 
+      
+        <Grid item xs={12}>
           <Paper className={classes.mapPaper}>
-          <div>
           <MapComponent/>
-          </div>
           </Paper>
         </Grid>
-        <Grid item xs={5}>
-          <Paper className={classes.paper}>xs=5</Paper>
         </Grid>
-        <Grid item xs={5}>
-          <Paper className={classes.paper}>xs=5</Paper>
+
+        <Grid container spacing={24}  className={classes.chartsGridContainer}> 
+        <Grid item xs={6} className={classes.chartGridItem}>
+            <Paper className={classes.paper}>xs=5</Paper>
         </Grid>
+        <Grid item xs={6} className={classes.chartGridItem}>
+            <Paper className={classes.paper}>xs=5</Paper>
+        </Grid>
+
       </Grid>
     </div>
         </main>
