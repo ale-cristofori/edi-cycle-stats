@@ -25,3 +25,6 @@ yarn-error.log*
 #misc
 material-dashboard-react-v1.5.0/
 *.code-workspace
+/data
+
+
