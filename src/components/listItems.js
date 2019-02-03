@@ -9,17 +9,16 @@ import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-import { Link } from 'react-router-dom';
 
 export const mainListItems = (
   <div>
-    <ListItem button component={Link} to='/'>
+    <ListItem button>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItem>
-    <ListItem button component={Link} to='/grid'> 
+    <ListItem button> 
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>

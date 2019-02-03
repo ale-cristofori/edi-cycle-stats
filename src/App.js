@@ -8,13 +8,9 @@ import SplashPage from './components/SplashPage';
 class App extends Component {
   render() {
     return (
-      // <div>
-      <Router>
-      <CssBaseline />
-      <Route exact={true} path="/" component={Dashboard}/>
-      <Route path="/grid" component={SplashPage}/>
-      </Router>
-      // </div>
+      <div>
+        <SplashPage/>
+      </div>
     );
   }
 }

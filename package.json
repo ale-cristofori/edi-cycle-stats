@@ -5,7 +5,11 @@
   "dependencies": {
     "@material-ui/core": "^3.9.1",
     "@material-ui/icons": "^3.0.2",
+    "axios": "^0.18.0",
+    "heatmap.js": "^2.0.5",
     "leaflet": "^1.4.0",
+    "leaflet-heatmap": "^1.0.0",
+    "proj4leaflet": "^1.0.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-router-dom": "^4.4.0-beta.6",
@@ -27,5 +31,6 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "homepage": "http://yomapo.com/edicycle"
 }
