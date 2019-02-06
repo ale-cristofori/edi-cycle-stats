@@ -84,7 +84,7 @@ class MapComponent extends React.Component {
         center: [55.953092,-3.198953],
         zoom: 12,
         layers: [
-          L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+          L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           })
         ]

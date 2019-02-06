@@ -135,17 +135,15 @@ class SplashPage extends Component {
             open={this.state.open}>
             <Divider />
             <List className={classes.mainList}>{mainListItems}</List>
-        </Drawer> 
+        </Drawer>
       <div className={classes.GridRoot}>
       <Grid container spacing={24} className={classes.mapGridContainer}> 
-      
         <Grid item xs={12}>
           <Paper className={classes.mapPaper}>
           <MapComponent/>
           </Paper>
         </Grid>
         </Grid>
-
         <Grid container spacing={24}  className={classes.chartsGridContainer}> 
         <Grid item xs={6} className={classes.chartGridItem}>
             <Paper className={classes.paper}>xs=5</Paper>
