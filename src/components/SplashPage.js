@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import logo from '../../src/logo.svg';
-import styled, { keyframes }from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles } from '@material-ui/core/styles';
+import L from 'leaflet';
+import axios from 'axios';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
@@ -15,6 +17,7 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import { mainListItems, secondaryListItems } from './listItems';
 import MapComponent from './MapComponent';
+import Pie from './PieChart/PieComponent';
 
 const styles = theme => ({
     root: {
@@ -102,60 +105,130 @@ const styles = theme => ({
   });
 
 class SplashPage extends Component {
-    state = {
-        open: false,
-      };
 
-    render() {
-    const { classes } = this.props;
-      return (
-    <div className={classes.root}>
-        <CssBaseline />
-        <AppBar
-          position="absolute"
-          className={classes.appBar}>
-          <Toolbar className={classes.toolbar}>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              className={classes.title}>
-              Edinburgh's Cycling Stats
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Drawer
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaperClose,
-            }}
-            open={this.state.open}>
-            <Divider />
-            <List className={classes.mainList}>{mainListItems}</List>
-        </Drawer>
-      <div className={classes.GridRoot}>
-      <Grid container spacing={24} className={classes.mapGridContainer}> 
-        <Grid item xs={12}>
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+      accPoints: [],
+      hmData: [],
+      countsData: []
+    }
+  }
+
+  async getServerData (years, severity, geom) {
+    try {
+      const response = await axios({
+        url: 'http://www.yomapo.com/edicycle/server/accidents_api.php',
+        method: 'post',
+        data: {
+          query: `
+          query AccidentsData($years: [Int], $severity: [String], $geom: [Float]) {
+              total(year: $years, severity: $severity, geom: $geom) {
+              year,
+              count
+            }, 
+            accidents(year: $years , severity: $severity, geom: $geom) {
+            type,
+            geometry {
+              type,
+              coordinates
+            },
+            properties {
+              casualty_severity,
+              year,
+              id
+            }
+          }
+        }`, variables:{years, severity, geom}}});
+        return response;
+    } catch (error){
+      alert("data not returned from Server, try again later")
+      console.log(error)
+    }
+  }
+
+  componentDidMount() {
+    var outerScope = this;
+    outerScope.getServerData().then(response => {
+      response.data.data.accidents.map(item => item.geometry.coordinates = [L.Projection.SphericalMercator.unproject(L.point(item.geometry.coordinates)).lng, L.Projection.SphericalMercator.unproject(L.point(item.geometry.coordinates)).lat]);
+      const hmData = response.data.data.accidents.map(item => {return {lat:item.geometry.coordinates[1], lng:item.geometry.coordinates[0], count: 1}})
+      const countsData = response.data.data.total;
+      outerScope.setState({accPoints : response.data, hmData, countsData});
+    }).catch(error=> {
+      alert("data not returned from Server, try again later")
+      console.log(error)
+    });
+  }
+
+  onArcMouseOver(year) {
+  }
+
+  onArcMouseOut(year) {
+    console.log('mouseOut')
+  }
+
+
+    render() { 
+      const { classes } = this.props;
+        return (
+      <div className={classes.root}>
+          <CssBaseline />
+          <AppBar
+            position="absolute"
+            className={classes.appBar}>
+            <Toolbar className={classes.toolbar}>
+              <Typography
+                component="h1"
+                variant="h6"
+                color="inherit"
+                noWrap
+                className={classes.title}>
+                Edinburgh's Cycling Stats
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <main className={classes.content}>
+          <div className={classes.appBarSpacer} />
+          <Drawer
+              variant="permanent"
+              classes={{
+                paper: classes.drawerPaperClose,
+              }}
+              open={this.state.open}>
+              <Divider />
+              <List className={classes.mainList}>{mainListItems}</List>
+          </Drawer>
+        <div className={classes.GridRoot}>
+        <Grid container spacing={24} className={classes.mapGridContainer}> 
+          <Grid item xs={12}>
+            <Paper className={classes.mapPaper}>
+            <MapComponent accPoints={this.state.accPoints} heatMapData={this.state.hmData} hmConfig={this.state.hmConfig}/>
+            </Paper>
+          </Grid>
+          </Grid>
+          <Grid container spacing={24}  className={classes.chartsGridContainer}> 
+          <Grid item xs={6} className={classes.chartGridItem}>
           <Paper className={classes.mapPaper}>
-          <MapComponent/>
+          <svg viewBox="-10 0 50 30" preserveAspectRatio="xMidYMid meet">
+            <Pie data={this.state.countsData} x={15} y={15}
+                   innerRadius={15 * .35}
+                   outerRadius={15}
+                   cornerRadius={7}
+                   padAngle={.02}
+                   onArcMouseOver={this.onArcMouseOver}
+                   onArcMouseOut={this.onArcMouseOver}
+                   />
+          </svg>
           </Paper>
+          </Grid>
+          <Grid item xs={6} className={classes.chartGridItem}>
+              <Paper className={classes.paper}>xs=5</Paper>
+          </Grid>
         </Grid>
-        </Grid>
-        <Grid container spacing={24}  className={classes.chartsGridContainer}> 
-        <Grid item xs={6} className={classes.chartGridItem}>
-            <Paper className={classes.paper}>xs=5</Paper>
-        </Grid>
-        <Grid item xs={6} className={classes.chartGridItem}>
-            <Paper className={classes.paper}>xs=5</Paper>
-        </Grid>
-
-      </Grid>
-    </div>
-        </main>
-        </div>
+      </div>
+          </main>
+          </div>
       );
     }
 }
