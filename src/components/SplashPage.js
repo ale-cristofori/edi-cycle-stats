@@ -17,7 +17,7 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import { mainListItems, secondaryListItems } from './listItems';
 import MapComponent from './MapComponent';
-import Pie from './PieChart/PieComponent';
+import Donut from './PieChart/DonutComponent';
 
 const styles = theme => ({
     root: {
@@ -112,11 +112,31 @@ class SplashPage extends Component {
       open: false,
       accPoints: [],
       hmData: [],
-      countsData: []
+      countsData: [],
+      years: null,
+      severity: null,
+      geom: null,
+      donutData :[
+  {year: 2005, count: 134},
+  {year: 2006, count: 148},
+  {year: 2007, count: 156},
+  {year: 2008, count: 150},
+  {year: 2009, count: 171},
+  {year: 2010, count: 178},
+  {year: 2011, count: 183},
+  {year: 2012, count: 220},
+  {year: 2013, count: 201},
+  {year: 2014, count: 203},
+  {year: 2015, count: 206},
+  {year: 2016, count: 188},
+  {year: 2017, count: 166}
+]
     }
+    this.onSelectYear = this.onSelectYear.bind(this);
+    
   }
 
-  async getServerData (years, severity, geom) {
+  async getServerData(years, severity, geom) {
     try {
       const response = await axios({
         url: 'http://www.yomapo.com/edicycle/server/accidents_api.php',
@@ -150,7 +170,7 @@ class SplashPage extends Component {
 
   componentDidMount() {
     var outerScope = this;
-    outerScope.getServerData().then(response => {
+    outerScope.getServerData(outerScope.state.years, outerScope.state.severity, outerScope.state.geom).then(response => {
       response.data.data.accidents.map(item => item.geometry.coordinates = [L.Projection.SphericalMercator.unproject(L.point(item.geometry.coordinates)).lng, L.Projection.SphericalMercator.unproject(L.point(item.geometry.coordinates)).lat]);
       const hmData = response.data.data.accidents.map(item => {return {lat:item.geometry.coordinates[1], lng:item.geometry.coordinates[0], count: 1}})
       const countsData = response.data.data.total;
@@ -161,11 +181,31 @@ class SplashPage extends Component {
     });
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.years !== prevState.years) {
+      this.getServerData(this.state.years, this.state.severity, this.state.geom).then(response => {
+        response.data.data.accidents.map(item => item.geometry.coordinates = [L.Projection.SphericalMercator.unproject(L.point(item.geometry.coordinates)).lng, L.Projection.SphericalMercator.unproject(L.point(item.geometry.coordinates)).lat]);
+        const hmData = response.data.data.accidents.map(item => {return {lat:item.geometry.coordinates[1], lng:item.geometry.coordinates[0], count: 1}})
+        const countsData = response.data.data.total;
+        this.setState({accPoints : response.data, hmData, countsData});
+      }).catch(error=> {
+        alert("data not returned from Server, try again later")
+        console.log(error)
+      });
+    }
+  }
+
   onArcMouseOver(year) {
   }
 
   onArcMouseOut(year) {
     console.log('mouseOut')
+  }
+
+  onSelectYear(year) {
+    this.setState({
+      years: [year]
+    });
   }
 
 
@@ -211,14 +251,7 @@ class SplashPage extends Component {
           <Grid item xs={6} className={classes.chartGridItem}>
           <Paper className={classes.mapPaper}>
           <svg viewBox="-10 0 50 30" preserveAspectRatio="xMidYMid meet">
-            <Pie data={this.state.countsData} x={15} y={15}
-                   innerRadius={15 * .35}
-                   outerRadius={15}
-                   cornerRadius={7}
-                   padAngle={.02}
-                   onArcMouseOver={this.onArcMouseOver}
-                   onArcMouseOut={this.onArcMouseOver}
-                   />
+            <Donut data={this.state.donutData} x={15} y={15} onSelectYear={this.onSelectYear}/>
           </svg>
           </Paper>
           </Grid>

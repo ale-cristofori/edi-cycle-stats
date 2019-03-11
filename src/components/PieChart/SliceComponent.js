@@ -1,62 +1,60 @@
 import React, { Component } from 'react';
 import * as d3 from "d3";
-import { withStyles } from '@material-ui/core/styles';
-
-const styles = theme => ({
-
-    sliceText: {
-        fontSize: '1px',
-        fontWeight: 'bold',
-        fontFamily: theme.typography.fontFamily
-    }
-
-});
 
 class Slice extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {isHovered: false};
-        this.onMouseOver = this.onMouseOver.bind(this);
-        //this.onMouseOut = this.onMouseOut.bind(this);
-    }
+    sliceRef = React.createRef();
     
-    onMouseOver() {
-        this.setState({isHovered: true});
-        this.props.onMouseOver(this.props.year)
-    }
-    
-    onMouseOut() {
-        this.props.onMouseOut()
-        this.setState({isHovered: false});
+    angle(value) {
+      let a = (value.startAngle + value.endAngle) * 90 / Math.PI - 90;
+      return a > 90 ? a -180 :a;  
     }
 
-    
+/*     componentDidUpdate() {
+     d3.select(this.sliceRef.current)
+     .select("path")
+      .transition()
+        .duration(900)
+        .attr("d", d3.arc()
+        .innerRadius(this.props.innerRadiusFinal3)
+        .outerRadius(this.props.outerRadius))
+    } */
+
+
+    /*         innerRadiusFinal = outerRadius * .5;
+        innerRadiusFinal3 = outerRadius* .45;
+        let el = d3.select(this.sliceRef.current);
+        el.transition()
+        .duration(750)
+        .attr("d", arcFinal); */
+
     render() {
-      const { classes } = this.props;
-      let {value, label, fill, innerRadius = 0, outerRadius, cornerRadius, padAngle, ...props} = this.props;
+      let {value, fill, innerRadius, outerRadius, label, onClickSlice, onMouseOverSlice, onMouseOutSlice} = this.props;
       // https://github.com/d3/d3/wiki/SVG-Shapes#arc
-      if (this.state.isHovered) {
-        outerRadius *= 0.9;
-      }
       let arc = d3.arc()
-      .innerRadius(innerRadius)
-      .outerRadius(outerRadius);
+        .innerRadius(innerRadius)
+        .outerRadius(outerRadius);
       return (
-        <g  onMouseOver={this.onMouseOver}
-            onMouseOut={this.onMouseOut}
-            {...props}>
-            <path d={arc(value)} fill={fill} />
-            <text transform={`translate(${arc.centroid(value)})`}
-                  dy=".35em"
-                  textAnchor="middle"
-                  fill="white"
-                  className={classes.sliceText}>
+        <g onClick={(e) => onClickSlice(label, fill, value)} 
+           onMouseOver={(e) => onMouseOverSlice(value)}
+           onMouseOut={onMouseOutSlice}
+           ref={this.sliceRef}>
+          <path d={arc(value)} fill={fill} />
+          <text transform={`translate(${arc.centroid(value)}) rotate(${this.angle(value)})`}
+                dy=".35em"
+                textAnchor="middle"
+                fill="white"
+                style={{
+                    fontSize: "1px", 
+                    fontFamily: "verdana", 
+                    fontWeight: "bold"
+                  }}>
                 {label}
-            </text>
-          </g>
+          </text>
+        </g>
+        
       );
     }
   }
 
-  export default withStyles(styles)(Slice);
+  export default Slice;
