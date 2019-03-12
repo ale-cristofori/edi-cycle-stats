@@ -133,7 +133,6 @@ class SplashPage extends Component {
 ]
     }
     this.onSelectYear = this.onSelectYear.bind(this);
-    
   }
 
   async getServerData(years, severity, geom) {
@@ -207,7 +206,6 @@ class SplashPage extends Component {
       years: [year]
     });
   }
-
 
     render() { 
       const { classes } = this.props;

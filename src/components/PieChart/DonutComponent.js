@@ -17,8 +17,6 @@ class Donut extends Component {
       this.colorScale = d3.scaleOrdinal(d3.schemeCategory10);
       this.renderSlice = this.renderSlice.bind(this);
       this.onClickSlice = this.onClickSlice.bind(this);
-      this.onMouseOverSlice = this.onMouseOverSlice.bind(this);
-      this.onMouseOutSlice = this.onMouseOutSlice.bind(this);
     }
 
     onClickSlice(label, fill, value) {
@@ -30,11 +28,6 @@ class Donut extends Component {
         this.props.onSelectYear(label);
     }
 
-    onMouseOverSlice (value) {
-      this.setState({
-        hoveredSlice: value.index
-      })
-    }
 
     onMouseOutSlice () {
       this.setState({
@@ -42,13 +35,8 @@ class Donut extends Component {
       })
     }
 
-    componentDidUpdate() {
-
-    }
-
     render() {
       let {x, y, data} = this.props;
-      // https://github.com/d3/d3/wiki/Pie-Layout
       let pie = d3.pie()
                   .sort(null);
       const counts = data.map(item => item.count);
@@ -73,9 +61,9 @@ class Donut extends Component {
       
       const {outerRadius, innerRadius, innerRadiusFinal, innerRadiusFinal3} = this.state;
       const finalInnerRadius = this.state.hoveredSlice === i ? innerRadiusFinal3 : innerRadius
-      // We'll create this component in a minute
       return (
         <Slice key={i}
+               index={i}
                innerRadius={finalInnerRadius}
                outerRadius={outerRadius}
                innerRadiusFinal={innerRadiusFinal}
@@ -84,9 +72,7 @@ class Donut extends Component {
                label={this.props.data[i].year}
                fill={this.colorScale(i)} 
                onClickSlice={this.onClickSlice}
-               onMouseOverSlice={this.onMouseOverSlice}
-               onMouseOutSlice={this.onMouseOutSlice}
-               ref={this.sliceRef} />
+               />
       );
     }
   }
