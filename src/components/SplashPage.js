@@ -15,9 +15,10 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
-import { mainListItems, secondaryListItems } from './listItems';
+import { MainListItems } from './SideBar/listItems';
 import MapComponent from './MapComponent';
 import Donut from './PieChart/DonutComponent';
+import BarChart from './BarChart/BarChartComponent';
 
 const styles = theme => ({
     root: {
@@ -38,11 +39,17 @@ const styles = theme => ({
         flexGrow: 1,
         flexDirection:"row",
     },
-    mapGridContainer :{
+    mapGridContainer: {
       margin: '0px',
       display: 'block',
       flexGrow: 4,
       width: 'auto',
+    },
+    mapGridItem: {
+      height: '100%'
+    },
+    mapGridItem: {
+      height: '100%'
     },
     chartsGridContainer :{
       margin: '0px',
@@ -97,6 +104,7 @@ const styles = theme => ({
         padding: theme.spacing.unit * 2,
         textAlign: 'center',
         color: theme.palette.text.secondary,
+        height: '100%'
       },
     chartGridItem: {
       width: '100%',
@@ -117,20 +125,25 @@ class SplashPage extends Component {
       severity: null,
       geom: null,
       donutData :[
-  {year: 2005, count: 134},
-  {year: 2006, count: 148},
-  {year: 2007, count: 156},
-  {year: 2008, count: 150},
-  {year: 2009, count: 171},
-  {year: 2010, count: 178},
-  {year: 2011, count: 183},
-  {year: 2012, count: 220},
-  {year: 2013, count: 201},
-  {year: 2014, count: 203},
-  {year: 2015, count: 206},
-  {year: 2016, count: 188},
-  {year: 2017, count: 166}
-]
+        {year: 2005, count: 134},
+        {year: 2006, count: 148},
+        {year: 2007, count: 156},
+        {year: 2008, count: 150},
+        {year: 2009, count: 171},
+        {year: 2010, count: 178},
+        {year: 2011, count: 183},
+        {year: 2012, count: 220},
+        {year: 2013, count: 201},
+        {year: 2014, count: 203},
+        {year: 2015, count: 206},
+        {year: 2016, count: 188},
+        {year: 2017, count: 166}
+      ],
+      barData: [
+        { group: "All", category: "Slight", measure: 1934 }, 
+        { group: "All", category: "Serious", measure: 362 }, 
+        { group: "All", category: "Fatal", measure: 8 }, 
+      ]
     }
     this.onSelectYear = this.onSelectYear.bind(this);
     this.onResetPieChart = this.onResetPieChart.bind(this);
@@ -218,7 +231,6 @@ class SplashPage extends Component {
       <div className={classes.root}>
           <CssBaseline />
           <AppBar
-            position="absolute"
             className={classes.appBar}>
             <Toolbar className={classes.toolbar}>
               <Typography
@@ -240,11 +252,13 @@ class SplashPage extends Component {
               }}
               open={this.state.open}>
               <Divider />
-              <List className={classes.mainList}>{mainListItems}</List>
+              <List className={classes.mainList}>
+              <MainListItems />
+              </List>
           </Drawer>
         <div className={classes.GridRoot}>
         <Grid container spacing={24} className={classes.mapGridContainer}> 
-          <Grid item xs={12}>
+          <Grid item xs={12} className={classes.mapGridItem}>
             <Paper className={classes.mapPaper}>
             <MapComponent accPoints={this.state.accPoints} heatMapData={this.state.hmData} hmConfig={this.state.hmConfig}/>
             </Paper>
@@ -252,14 +266,18 @@ class SplashPage extends Component {
           </Grid>
           <Grid container spacing={24}  className={classes.chartsGridContainer}> 
           <Grid item xs={6} className={classes.chartGridItem}>
-          <Paper className={classes.mapPaper}>
+          <Paper className={classes.paper}>
           <svg viewBox="-10 0 50 30" preserveAspectRatio="xMidYMid meet" onClick={this.onResetPieChart}>
             <Donut data={this.state.donutData} x={15} y={15} onSelectYear={this.onSelectYear} ref={this.pieChartRef}/>
           </svg>
           </Paper>
           </Grid>
           <Grid item xs={6} className={classes.chartGridItem}>
-              <Paper className={classes.paper}>xs=5</Paper>
+              <Paper className={classes.paper}>
+              <svg viewBox="-10 0 50 30" preserveAspectRatio="xMidYMid meet" onClick={this.onResetPieChart}>
+                <BarChart data={this.state.barData} marginLeft={50} marginTop={30} barColor={"grey"}/>
+              </svg>
+              </Paper>
           </Grid>
         </Grid>
       </div>

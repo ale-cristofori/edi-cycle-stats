@@ -70,7 +70,7 @@ class MapComponent extends React.Component {
       0.6: '#ffffff', 0.8: '#ffffff', 1.0: '#ffffff'
     };
     return (
-    <Map center={position} zoom={this.state.zoom} style={{minHeight: '600px', filter: 'brightness(1.75)'}}>
+    <Map center={position} zoom={this.state.zoom} style={{minHeight: '100%', filter: 'brightness(1.75)'}}>
       <TileLayer
         attribution={'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}
         url={'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png'} 
