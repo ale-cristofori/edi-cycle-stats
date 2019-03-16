@@ -6,9 +6,9 @@ class Donut extends Component {
     constructor(props) {
       super(props);
       this.state = {
-          pieTitle: "", 
-          textFill: "",
-          selectedCount: "",
+          pieTitle: "2005 - 2017", 
+          textFill: "grey",
+          selectedCount: "2304",
           outerRadius : 15,
           innerRadius: 15 / 1.8,
           innerRadiusFinal3 : 15* .45,
@@ -17,6 +17,7 @@ class Donut extends Component {
       this.colorScale = d3.scaleOrdinal(d3.schemeCategory10);
       this.renderSlice = this.renderSlice.bind(this);
       this.onClickSlice = this.onClickSlice.bind(this);
+      this.onResetPieChart = this.onResetPieChart.bind(this);
     }
 
     onClickSlice(label, fill, value) {
@@ -28,6 +29,13 @@ class Donut extends Component {
         this.props.onSelectYear(label);
     }
 
+    onResetPieChart() {
+      this.setState({
+        pieTitle: "2005 - 2017",
+        textFill: "grey",
+        selectedCount: "2304"
+    });
+  }
 
     onMouseOutSlice () {
       this.setState({
@@ -40,18 +48,22 @@ class Donut extends Component {
       let pie = d3.pie()
                   .sort(null);
       const counts = data.map(item => item.count);
+      const textX = this.state.textFill === "grey" ? "-5em" : "-4.2em";
+      const titleX = this.state.textFill === "grey" ? "5em" : "5em";
+      const totalX = this.state.textFill === "grey" ? "-7.00em" : "-4.65em";
+      const fontSize = this.state.textFill === "grey" ? "1.5px" : "2px";
       return (
         <g transform={`translate(${x}, ${y})`}>
           {/* Render a slice for each data point */}
           {pie(counts).map(this.renderSlice)}
         <text
-            x="-4.2em"
+            x={textX}
             y="-.35em"
             textAnchor="middle"
-            style={{fontSize: "2px", fontFamily: "verdana", fontWeight: "bold"}}
+            style={{fontSize: fontSize, fontFamily: "verdana", fontWeight: "bold"}}
             fill={this.state.textFill}>
-        {this.state.pieTitle && <tspan dy="0em" dx="5em">{this.state.pieTitle}</tspan>}
-        {this.state.selectedCount && <tspan dy="1.2em" dx="-4.65em"> Total: {this.state.selectedCount}</tspan>}
+        {this.state.pieTitle && <tspan dy="0em" dx={titleX}>{this.state.pieTitle}</tspan>}
+        {this.state.selectedCount && <tspan dy="1.2em" dx={totalX}> Total: {this.state.selectedCount}</tspan>}
         </text>
         </g>
       );

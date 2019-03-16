@@ -69,7 +69,7 @@ class Slice extends Component {
         .innerRadius(innerRadius)
         .outerRadius(outerRadius);
       return (
-        <g onClick={(e) => onClickSlice(label, fill, value)} 
+        <g onClick={(e) => {e.stopPropagation(); onClickSlice(label, fill, value)}} 
            onMouseOver={(e) => this.onMouseOverSlice(value)}
            onMouseOut={(e) => this.onMouseOutSlice(value)}
            className="slice"

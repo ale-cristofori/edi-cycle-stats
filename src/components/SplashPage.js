@@ -133,6 +133,8 @@ class SplashPage extends Component {
 ]
     }
     this.onSelectYear = this.onSelectYear.bind(this);
+    this.onResetPieChart = this.onResetPieChart.bind(this);
+    this.pieChartRef = React.createRef();
   }
 
   async getServerData(years, severity, geom) {
@@ -194,17 +196,20 @@ class SplashPage extends Component {
     }
   }
 
-  onArcMouseOver(year) {
-  }
-
-  onArcMouseOut(year) {
-    console.log('mouseOut')
-  }
 
   onSelectYear(year) {
     this.setState({
       years: [year]
     });
+  }
+
+  onResetPieChart(e) {
+    this.setState({
+      years: null,
+      severity: null,
+      geom: null
+    });
+    this.pieChartRef.current.onResetPieChart()
   }
 
     render() { 
@@ -248,8 +253,8 @@ class SplashPage extends Component {
           <Grid container spacing={24}  className={classes.chartsGridContainer}> 
           <Grid item xs={6} className={classes.chartGridItem}>
           <Paper className={classes.mapPaper}>
-          <svg viewBox="-10 0 50 30" preserveAspectRatio="xMidYMid meet">
-            <Donut data={this.state.donutData} x={15} y={15} onSelectYear={this.onSelectYear}/>
+          <svg viewBox="-10 0 50 30" preserveAspectRatio="xMidYMid meet" onClick={this.onResetPieChart}>
+            <Donut data={this.state.donutData} x={15} y={15} onSelectYear={this.onSelectYear} ref={this.pieChartRef}/>
           </svg>
           </Paper>
           </Grid>
