@@ -1,8 +1,21 @@
+Edinburgh cycling accidents map with a dashboard style visualisation.
+The webpage is built using ReactJS and React [MateruialUI!](https://material-ui.com/) components.
+Map component is made in Leaflet with [react-leaflet-heatmap-layer!](https://www.npmjs.com/package/react-leaflet-heatmap-layer)
+[Accidents data!](https://data.gov.uk/dataset/cb7ae6f0-4be6-4935-9277-47e5ce24a11f/road-safety-data) (2005 - 2017) from UK Department for Transport filtered only for accidents involving bicycles and with details only on severity.
+The backend is a graphQL API with data stored on a remote server [demo here!](http://www.yomapo.com/graphqldemo/).
+Charts and their animations are created with React components incapsulating D3
+as explained in [this example!](https://medium.com/localmed-engineering/svg-pie-chart-using-react-and-d3-43a381ce7246)
+and [this exmaple!](https://mikewilliamson.wordpress.com/2016/06/03/d3-and-react-3-ways/).
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
 In the project directory, you can run:
+
+
+### `npm install`
+
+right after you download the package to install node dependencies.
 
 ### `npm start`
 
@@ -11,11 +24,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `npm run build`
 
