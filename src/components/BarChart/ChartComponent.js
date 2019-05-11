@@ -34,8 +34,8 @@ class Chart extends Component {
       
       data.forEach((datum, index) => {
         const x = barsDistance[index];
-
-        bars.push(<Bar key={index} x={x} y={(bottom - 0.6 - (height - y(datum.measure)))* 0.0001} width={6} height={height - y(datum.measure)} />)
+        const newHeight = index == 2 ? height - y(datum.measure) + 0.5 : height - y(datum.measure); 
+        bars.push(<Bar key={index} x={x} y={(bottom - 0.6 - (height - y(datum.measure)))* 0.0001} width={6} height={newHeight} />)
       })
 
       return (
