@@ -11,7 +11,16 @@ class Bar extends Component {
             fill: "steelblue"
           }
         return(
-            <g> {/**transform={`translate(${marginLeft}, ${marginTop})`} */}
+            <g>
+            <text 
+              style={{fill: "steelblue"}} 
+              x={this.props.x - 6} 
+              y={this.props.y + 5.5 + this.props.height} 
+              transform={`rotate(180 ${this.props.x} ${this.props.y + 5.5 + this.props.height})`}
+              font-family="Verdana" 
+              font-size=".55" 
+              font-weight="bold">{this.props.value}
+            </text>
                 <rect className="bar" style={style} x={this.props.x} y={this.props.y + 5} width={this.props.width} height={this.props.height} />
             </g>
         );

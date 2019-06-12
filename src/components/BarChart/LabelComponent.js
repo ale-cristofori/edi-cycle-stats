@@ -2,19 +2,21 @@ import React, { Component } from 'react';
 import * as d3 from "d3";
 
 
-class XAxis extends Component {
+class Labels extends Component {
 
     constructor(props) {
       super(props)
     }
   
     render() {
+
       let style = {
         stroke: "steelblue",
         strokeWidth: "1px"
       }
       
-      let step = (this.props.start + this.props.end / this.props.labels.length)
+      //let step = (this.props.start + this.props.end / this.props.labels.length)
+      let step = 6;
       
       //D3 mathy bits   
       let ticks = d3.range(this.props.start, this.props.end, step)
@@ -26,19 +28,19 @@ class XAxis extends Component {
       
       let columnLables = []
       ticks.forEach((tick, index) => {
-        columnLables.push(<text key={index} style={{fill: "steelblue"}} x={tick + 5} y={this.props.x + 20} font-family="Verdana" font-size="55">{this.props.labels[index]}</text>)
+        columnLables.push(<text key={index} style={{fill: "steelblue"}} x={tick + 2} y={this.props.y} font-family="Verdana" font-size=".55" font-weight="bold">{this.props.labels[index]}</text>)
       })
       
     
       return(
-        <g>
-            <line x1={this.props.start} y1={this.props.x } x2={this.props.end} y2={this.props.x} style={ style } />
+        <g  transform="translate(18,19.5)rotate(180)">
+{/*             <line x1={this.props.start} y1={this.props.x } x2={this.props.end} y2={this.props.x} style={ style } /> */}
             { columnLables }
-            { lines }
+{/*             { lines } */}
         </g>
       )
     }
   
   }
 
-  export default XAxis;
+  export default Labels;
