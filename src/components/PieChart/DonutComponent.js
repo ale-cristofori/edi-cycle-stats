@@ -26,7 +26,7 @@ class Donut extends Component {
             textFill: fill,
             selectedCount: value.data
         });
-        this.props.onSelectYear(label);
+        this.props.onSelectYear(label, fill);
     }
 
     onResetPieChart() {

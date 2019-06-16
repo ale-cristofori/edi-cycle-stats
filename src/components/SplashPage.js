@@ -136,37 +136,13 @@ class SplashPage extends Component {
         {year: 2017, count: 166}
       ],
       barData: [
-        { group: "All", category: "Slight", measure: 1934 }, 
-        { group: "All", category: "Serious", measure: 362 }, 
-        { group: "All", category: "Fatal", measure: 8 }, 
+        { year: "All", severity: "Slight", count: 1934 }, 
+        { year: "All", severity: "Serious", count: 362 }, 
+        { year: "All", severity: "Fatal", count: 8 }, 
       ],
-/*       provisionalBarData : [
-        {letter: 'A', frequency: .08167},
-        {letter: 'B', frequency: .01492},
-        {letter: 'C', frequency: .02782},
-        {letter: 'D', frequency: .04253},
-        {letter: 'E', frequency: .12702},
-        {letter: 'F', frequency: .02288},
-        {letter: 'G', frequency: .02015},
-        {letter: 'H', frequency: .06094},
-        {letter: 'I', frequency: .06966},
-        {letter: 'J', frequency: .00153},
-        {letter: 'K', frequency: .00772},
-        {letter: 'L', frequency: .04025},
-        {letter: 'M', frequency: .02406},
-        {letter: 'N', frequency: .06749},
-        {letter: 'O', frequency: .07507},
-        {letter: 'P', frequency: .01929},
-        {letter: 'Q', frequency: .00095},
-        {letter: 'R', frequency: .05987},
-        {letter: 'S', frequency: .06327},
-        {letter: 'T', frequency: .09056},
-        {letter: 'U', frequency: .02758},
-        {letter: 'V', frequency: .00978},
-        {letter: 'W', frequency: .02360},
-        {letter: 'X', frequency: .00150},
-        {letter: 'Y', frequency: .01974},
-        {letter: 'Z', frequency: .00074}] */
+      barStyle : {
+        fill: 'gray'
+      }
     }
     this.onSelectYear = this.onSelectYear.bind(this);
     this.onResetPieChart = this.onResetPieChart.bind(this);
@@ -224,7 +200,19 @@ class SplashPage extends Component {
         response.data.data.accidents.map(item => item.geometry.coordinates = [L.Projection.SphericalMercator.unproject(L.point(item.geometry.coordinates)).lng, L.Projection.SphericalMercator.unproject(L.point(item.geometry.coordinates)).lat]);
         const hmData = response.data.data.accidents.map(item => {return {lat:item.geometry.coordinates[1], lng:item.geometry.coordinates[0], count: 1}})
         const countsData = response.data.data.total;
-        this.setState({accPoints : response.data, hmData, countsData});
+        const year = response.data.data.total.filter(item => {return item.count > 0})[0].year;
+        const countsObj = response.data.data.accidents.reduce((p, c) => {
+          var severity = c.properties.casualty_severity;
+          if(!p.hasOwnProperty(severity)) {
+            p[severity] = 0;
+          }
+          p[severity]++;
+          return p    
+        }, {});
+        const barData = Object.keys(countsObj).map(item => {
+          return {severity: item, count: countsObj[item], year};
+        });
+        this.setState({accPoints : response.data, hmData, countsData, barData});
       }).catch(error=> {
         alert("data not returned from Server, try again later")
         console.log(error)
@@ -233,9 +221,10 @@ class SplashPage extends Component {
   }
 
 
-  onSelectYear(year) {
+  onSelectYear(year, fill) {
     this.setState({
-      years: [year]
+      years: [year],
+      barStyle: {fill}
     });
   }
 
@@ -243,7 +232,8 @@ class SplashPage extends Component {
     this.setState({
       years: null,
       severity: null,
-      geom: null
+      geom: null,
+      barStyle: {fill: 'gray'}
     });
     this.pieChartRef.current.onResetPieChart()
   }
@@ -298,7 +288,7 @@ class SplashPage extends Component {
           <Grid item xs={6} className={classes.chartGridItem}>
             <Paper className={classes.paper}>
               <svg viewBox="-1 3 20 12" preserveAspectRatio="xMidYMid meet" >
-                <Chart data={this.state.barData} width={60} height={15}/>
+                <Chart data={this.state.barData} width={60} height={15} barStyle={this.state.barStyle}/>
               </svg>
               </Paper>
           </Grid>
