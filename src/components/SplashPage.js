@@ -18,9 +18,7 @@ import Chart from './BarChart/ChartComponent';
 
 const styles = theme => ({
     root: {
-      display: 'flex',
       flexGrow: 1,
-      flexDirection: 'column'
     },
     content: {
       flexGrow: 1,
@@ -40,9 +38,6 @@ const styles = theme => ({
       display: 'block',
       flexGrow: 4,
       width: 'auto',
-    },
-    mapGridItem: {
-      height: '100%'
     },
     mapGridItem: {
       height: '100%'
@@ -270,22 +265,20 @@ class SplashPage extends Component {
               </List>
           </Drawer>
         <div className={classes.GridRoot}>
-        <Grid container spacing={24} className={classes.mapGridContainer}> 
-          <Grid item xs={12} className={classes.mapGridItem}>
+        <Grid container spacing={24}>
+          <Grid item xs={12} sm={6}>
             <Paper className={classes.mapPaper}>
-            <MapComponent accPoints={this.state.accPoints} heatMapData={this.state.hmData} hmConfig={this.state.hmConfig}/>
+            {/*<MapComponent accPoints={this.state.accPoints} heatMapData={this.state.hmData} hmConfig={this.state.hmConfig}/>*/}
             </Paper>
           </Grid>
-          </Grid>
-          <Grid container spacing={24}  className={classes.chartsGridContainer}> 
-          <Grid item xs={6} className={classes.chartGridItem}>
+          <Grid item xs={12} sm={3}>
           <Paper className={classes.paper}>
           <svg viewBox="-10 0 50 30" preserveAspectRatio="xMidYMid meet" onClick={this.onResetPieChart}>
             <Donut data={this.state.donutData} x={15} y={15} onSelectYear={this.onSelectYear} ref={this.pieChartRef}/>
           </svg>
           </Paper>
           </Grid>
-          <Grid item xs={6} className={classes.chartGridItem}>
+          <Grid item xs={12} sm={3}>
             <Paper className={classes.paper}>
               <svg viewBox="-1 3 20 12" preserveAspectRatio="xMidYMid meet" >
                 <Chart data={this.state.barData} width={60} height={15} barStyle={this.state.barStyle}/>
