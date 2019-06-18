@@ -57,15 +57,15 @@ class Donut extends Component {
           {/* Render a slice for each data point */}
           {pie(counts).map(this.renderSlice)}
         <text
-            //height="50px"
-            //width="50px"
-            x={0}
+            text-anchor = "middle"
+            height={68}
+            width={68}
+            x={textX - 10}
             y="0"
-            textAnchor="middle"
             style={{fontSize: fontSize, fontFamily: "verdana", fontWeight: "bold"}}
             fill={this.state.textFill}>
-        {this.state.pieTitle && <tspan dy="0" dx={0}>{this.state.pieTitle}</tspan>}
-        {this.state.selectedCount && <tspan dy="0" dx={0}> Total: {this.state.selectedCount}</tspan>}
+        {this.state.pieTitle && <tspan dy="0" dx="0" height={68} width={68}>{this.state.pieTitle}<br /></tspan> } 
+        {this.state.selectedCount && <tspan dy="2" dx="-10.5"> Total: {this.state.selectedCount}</tspan>}
         </text>
         </g>
       );
