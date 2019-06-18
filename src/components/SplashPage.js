@@ -32,6 +32,7 @@ const styles = theme => ({
         display: 'flex',
         flexGrow: 1,
         flexDirection:"row",
+        height: '100%'
     },
     mapGridContainer: {
       margin: '0px',
@@ -95,12 +96,12 @@ const styles = theme => ({
         padding: theme.spacing.unit * 2,
         textAlign: 'center',
         color: theme.palette.text.secondary,
-        height: '100%'
+        height: '100%' 
       },
     chartGridItem: {
       width: '100%',
       minWidth: '100%',
-      },
+      }
   });
 
 class SplashPage extends Component {
@@ -265,20 +266,22 @@ class SplashPage extends Component {
               </List>
           </Drawer>
         <div className={classes.GridRoot}>
-        <Grid container spacing={24}>
-          <Grid item xs={12} sm={6}>
-            <Paper className={classes.mapPaper}>
-            {/*<MapComponent accPoints={this.state.accPoints} heatMapData={this.state.hmData} hmConfig={this.state.hmConfig}/>*/}
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={3}>
+        <Grid container spacing={24} style={{margin: '0px'}}>
+            <Grid item xs={12}>
+              <Paper className={classes.mapPaper}>
+              <MapComponent accPoints={this.state.accPoints} heatMapData={this.state.hmData} hmConfig={this.state.hmConfig}/>
+              </Paper>
+            </Grid>
+        </Grid>
+        <Grid container spacing={24} style={{margin: '0px', display: 'flex', flexDirection: 'inherit', alignContent: 'space-between'}}>
+          <Grid item xs={8}>
           <Paper className={classes.paper}>
           <svg viewBox="-10 0 50 30" preserveAspectRatio="xMidYMid meet" onClick={this.onResetPieChart}>
-            <Donut data={this.state.donutData} x={15} y={15} onSelectYear={this.onSelectYear} ref={this.pieChartRef}/>
+            <Donut data={this.state.donutData} x={15} y={15} width={60} height={15} onSelectYear={this.onSelectYear} ref={this.pieChartRef}/>
           </svg>
           </Paper>
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid item xs={8}>
             <Paper className={classes.paper}>
               <svg viewBox="-1 3 20 12" preserveAspectRatio="xMidYMid meet" >
                 <Chart data={this.state.barData} width={60} height={15} barStyle={this.state.barStyle}/>
