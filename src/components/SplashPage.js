@@ -25,8 +25,7 @@ const styles = theme => ({
       paddingLeft: theme.spacing.unit * 7, 
       paddingTop: theme.spacing.unit * 9, 
       paddingBottom:  theme.spacing.unit * 4, 
-      height: '100vh',
-      overflow: 'auto',
+      height: '100vh'
     },
     GridRoot: {
         display: 'flex',
@@ -87,8 +86,15 @@ const styles = theme => ({
         overflowY: 'hidden',
         width: theme.spacing.unit * 7,
       },
-    paper: {
+    pieChartPaper: {
       padding: theme.spacing.unit * 2,
+      marginBottom: theme.spacing.unit * 12,
+      textAlign: 'center',
+      color: theme.palette.text.secondary,
+    },
+    barChartPaper: {
+      padding: theme.spacing.unit * 2,
+      marginTop: theme.spacing.unit * 12,
       textAlign: 'center',
       color: theme.palette.text.secondary,
     },
@@ -266,28 +272,24 @@ class SplashPage extends Component {
               </List>
           </Drawer>
         <div className={classes.GridRoot}>
-        <Grid container spacing={24} style={{margin: '0px'}}>
-            <Grid item xs={12}>
-              <Paper className={classes.mapPaper}>
+        <Grid container spacing={24} style={{margin: '0px', height: '100%'}}>
+            <Grid item xs={12} md={8} style={{height: '100%'}}>
+              <Paper className={classes.mapPaper} elevation={2}>
               <MapComponent accPoints={this.state.accPoints} heatMapData={this.state.hmData} hmConfig={this.state.hmConfig}/>
               </Paper>
             </Grid>
-        </Grid>
-        <Grid container spacing={24} style={{margin: '0px', display: 'flex', flexDirection: 'inherit', alignContent: 'space-between'}}>
-          <Grid item xs={8}>
-          <Paper className={classes.paper}>
-          <svg viewBox="-10 0 50 30" preserveAspectRatio="xMidYMid meet" onClick={this.onResetPieChart}>
-            <Donut data={this.state.donutData} x={15} y={15} width={60} height={15} onSelectYear={this.onSelectYear} ref={this.pieChartRef}/>
-          </svg>
-          </Paper>
-          </Grid>
-          <Grid item xs={8}>
-            <Paper className={classes.paper}>
+            <Grid item xs={12} md={4}>
+            <Paper className={classes.pieChartPaper} elevation={2}>
+              <svg viewBox="-10 0 50 30" preserveAspectRatio="xMidYMid meet" onClick={this.onResetPieChart}>
+                <Donut data={this.state.donutData} x={15} y={15} width={60} height={15} onSelectYear={this.onSelectYear} ref={this.pieChartRef}/>
+              </svg>
+              </Paper>
+              <Paper className={classes.barChartPaper} elevation={2}>
               <svg viewBox="-1 3 20 12" preserveAspectRatio="xMidYMid meet" >
                 <Chart data={this.state.barData} width={60} height={15} barStyle={this.state.barStyle}/>
               </svg>
               </Paper>
-          </Grid>
+            </Grid>
         </Grid>
       </div>
           </main>
