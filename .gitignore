@@ -26,5 +26,16 @@ yarn-error.log*
 material-dashboard-react-v1.5.0/
 *.code-workspace
 /data
-
+Backups/
+CachedData/
+CachedExtensions/
+Cookies
+Cookies-journal
+Network Persistent State
+User/
+languagepacks.json
+logs/
+machineid
+rapid_render.json
+storage.json
 
