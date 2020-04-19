@@ -43,10 +43,9 @@ const styles = theme => ({
       height: '100%'
     },
     chartsGridContainer :{
-      margin: '0px',
-      flexGrow: 2,
-      display: 'block',
-      width: 'auto',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
     },
     toolbar: {
         paddingRight: 24, // keep right padding when drawer closed
@@ -88,13 +87,12 @@ const styles = theme => ({
       },
     pieChartPaper: {
       padding: theme.spacing.unit * 2,
-      marginBottom: theme.spacing.unit * 12,
       textAlign: 'center',
       color: theme.palette.text.secondary,
     },
     barChartPaper: {
       padding: theme.spacing.unit * 2,
-      marginTop: theme.spacing.unit * 12,
+      marginTop: 20,
       textAlign: 'center',
       color: theme.palette.text.secondary,
     },
@@ -278,7 +276,7 @@ class SplashPage extends Component {
               <MapComponent accPoints={this.state.accPoints} heatMapData={this.state.hmData} hmConfig={this.state.hmConfig}/>
               </Paper>
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={4} className={classes.chartsGridContainer}>
             <Paper className={classes.pieChartPaper} elevation={2}>
               <svg viewBox="-10 0 50 30" preserveAspectRatio="xMidYMid meet" onClick={this.onResetPieChart}>
                 <Donut data={this.state.donutData} x={15} y={15} width={60} height={15} onSelectYear={this.onSelectYear} ref={this.pieChartRef}/>
