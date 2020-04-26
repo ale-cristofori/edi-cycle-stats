@@ -28,9 +28,9 @@ class Bar extends Component {
             <text 
               ref={this.countsLabelRef}
               fill="gray"
-              x={this.props.x - 6} 
-              y={this.props.y + 5.5 + this.props.height} 
-              transform={`rotate(180 ${this.props.x} ${this.props.y + 5.5 + this.props.height})`}
+              y={((this.props.y + 5.3) + this.props.height) * -1} 
+              x={this.props.x + this.props.width}
+              text-anchor="end"
               font-family="Verdana" 
               font-size=".55" 
               font-weight="bold">{this.props.value}
@@ -38,6 +38,7 @@ class Bar extends Component {
                 <rect 
                     className="bar" 
                     fill="gray"
+                    transform="scale(1, -1)"
                     x={this.props.x} 
                     y={this.props.y + 5} 
                     width={this.props.width} 

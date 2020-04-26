@@ -41,7 +41,7 @@ class Labels extends Component {
     })
 
       return(
-        <g  transform="translate(18,19.5)rotate(180)">
+        <g  transform="translate(18,19.5) scale(-1, 1)">
             { columnLables }
         </g>
       )

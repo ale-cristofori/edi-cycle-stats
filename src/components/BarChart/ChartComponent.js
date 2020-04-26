@@ -19,7 +19,7 @@ class Chart extends Component {
       let margin = {top: 2, right: 2, bottom: 3, left: 4.5},
       width = this.props.width - margin.left - margin.right,
       height = this.props.height - margin.top - margin.bottom;
-      let severities = data.map(d => d.severity).reverse();
+      let severities = data.map(d => d.severity);
       const barsDistance = {
         0: 0,
         1: 6,
@@ -40,7 +40,7 @@ class Chart extends Component {
       
       data.forEach((datum, index) => {
         const x = barsDistance[index];
-        let newHeight = height - y(datum.count);
+        let newHeight = (height - y(datum.count) );
         if (index === 2 && datum.count === 0) {
           newHeight = newHeight + 0.2;
         } 
@@ -49,17 +49,22 @@ class Chart extends Component {
         }
         bars.push(
           <g>
-            <Bar key={index} x={x} y={(bottom - 0.6 - (height - y(datum.count)))* 0.0001} width={6} height={newHeight} value={datum.count} barStyle={barStyle}/> 
+            <Bar 
+              key={index} 
+              x={x} 
+              y={(bottom - 0.6 - (height - y(datum.count)))* 0.0001} 
+              width={6} 
+              height={newHeight} 
+              value={datum.count} 
+              barStyle={barStyle}/> 
           </g>
         )
       })
 
       return (
-        <g className="chart" transform="translate(18,19)rotate(180)">
-        { bars }
-        <Labels x={4.5} y={15.3} labels={severities} start={0} end={18} labelStyle={barStyle}/>
-     </g>
-
+        <g className="chart" transform="translate(0,19)">
+          { bars }
+        </g>
       );
     }
   }
