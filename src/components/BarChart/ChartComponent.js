@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from "d3";
 
 import Bar from  './BarComponent';
+import Labels from './LabelComponent';
 
 class Chart extends Component {
 
@@ -63,6 +64,7 @@ class Chart extends Component {
       return (
         <g className="chart" transform="translate(0,19)">
           { bars }
+          <Labels x={4.5} y={-4.4} labels={severities} start={0} end={18} labelStyle={barStyle}/>
         </g>
       );
     }

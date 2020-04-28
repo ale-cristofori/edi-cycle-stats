@@ -60,7 +60,7 @@ class Donut extends Component {
             text-anchor = "middle"
             height={68}
             width={68}
-            x={textX - 10}
+            x={textX}
             y={0}
             style={{fontSize: fontSize, fontFamily: "verdana", fontWeight: "bold"}}
             fill={this.state.textFill}>
