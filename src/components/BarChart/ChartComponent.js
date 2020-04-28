@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from "d3";
 
-import Labels from './LabelComponent';
 import Bar from  './BarComponent';
 
 class Chart extends Component {

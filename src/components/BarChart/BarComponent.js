@@ -29,7 +29,7 @@ class Bar extends Component {
               ref={this.countsLabelRef}
               fill="gray"
               y={((this.props.y + 5.3) + this.props.height) * -1} 
-              x={this.props.x + this.props.width}
+              x={(this.props.x + this.props.width)}
               text-anchor="end"
               font-family="Verdana" 
               font-size=".55" 

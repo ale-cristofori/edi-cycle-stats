@@ -61,11 +61,11 @@ class Donut extends Component {
             height={68}
             width={68}
             x={textX - 10}
-            y="0"
+            y={0}
             style={{fontSize: fontSize, fontFamily: "verdana", fontWeight: "bold"}}
             fill={this.state.textFill}>
-        {this.state.pieTitle && <tspan y="0" x="0" height={68} width={68}>{this.state.pieTitle}</tspan>} 
-        {this.state.selectedCount && <tspan y="2" x="0"> Total: {this.state.selectedCount}</tspan>}
+        {this.state.pieTitle && <tspan y={0} x={0} height={68} width={68}>{this.state.pieTitle}</tspan>} 
+        {this.state.selectedCount && <tspan y={2} x={0}> Total: {this.state.selectedCount}</tspan>}
         </text>
         </g>
       );

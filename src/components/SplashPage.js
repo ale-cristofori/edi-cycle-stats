@@ -270,8 +270,8 @@ class SplashPage extends Component {
               </List>
           </Drawer>
         <div className={classes.GridRoot}>
-        <Grid container spacing={24} style={{margin: '0px', height: '100%'}}>
-            <Grid item xs={12} md={8} style={{height: '100%'}}>
+        <Grid container spacing={24} style={{margin: '0px'}}>
+            <Grid item xs={12} md={8} style={{minHeight: '300px'}}>
               <Paper className={classes.mapPaper} elevation={2}>
               <MapComponent accPoints={this.state.accPoints} heatMapData={this.state.hmData} hmConfig={this.state.hmConfig}/>
               </Paper>
