@@ -14,7 +14,7 @@ class Labels extends Component {
       if (prevProps.labelStyle.fill !== this.props.labelStyle.fill) {
           let label = d3.selectAll('.bar-label');
           label.transition()
-              .duration(800)
+              .duration(500)
               .attr("fill", this.props.labelStyle.fill)
       }
   }

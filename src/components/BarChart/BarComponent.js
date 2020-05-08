@@ -10,25 +10,51 @@ class Bar extends Component {
     countsLabelRef = React.createRef();
 
     componentDidUpdate(prevProps) {
-        if (prevProps.barStyle.fill !== this.props.barStyle.fill) {
-            let rect = d3.select(this.rectRef.current);
-            let countsLabel = d3.select(this.countsLabelRef.current);
+        let rect = d3.select(this.rectRef.current);
+        let countsLabel = d3.select(this.countsLabelRef.current);
+
+        if ((prevProps.barStyle.fill !== this.props.barStyle.fill)) {
             rect.transition()
-                .duration(800)
+                .duration(650)
                 .attr("fill", this.props.barStyle.fill)
+                .transition()
+                .duration(650)
+                .attr("height", this.props.height)
+                countsLabel.transition()
+                .duration(650)
+                .attr("fill", this.props.barStyle.fill)
+        }
+
+        if(prevProps.y !== this.props.y) {
             countsLabel.transition()
-                .duration(800)
-                .attr("fill", this.props.barStyle.fill)
+            .duration(650)
+            .attr("y", ((this.props.y + 5.3) + this.props.height) * -1)
+        }
+
+        if ((prevProps.height !== this.props.height)) {
+            rect.transition()
+                .duration(650)
+                .attr("height", this.props.height)
         }
     }
 
+    componentDidMount() {
+        let rect = d3.select(this.rectRef.current);
+        let countsLabel = d3.select(this.countsLabelRef.current);
+        rect.transition()
+            .duration(650)
+            .attr("height", this.props.height);
+        countsLabel.transition()
+            .duration(650)
+            .attr("y", ((this.props.y + 5.3) + this.props.height) * -1);
+    }
+        
     render() {
         return(
             <g>
             <text 
               ref={this.countsLabelRef}
               fill="gray"
-              y={((this.props.y + 5.3) + this.props.height) * -1}
               x={(this.props.x + this.props.width)}
               text-anchor="end"
               font-family="Verdana" 
@@ -41,8 +67,7 @@ class Bar extends Component {
                     transform="scale(1, -1)"
                     x={this.props.x} 
                     y={this.props.y + 5} 
-                    width={this.props.width} 
-                    height={this.props.height}
+                    width={this.props.width}
                     ref={this.rectRef}
                 />
             </g>
