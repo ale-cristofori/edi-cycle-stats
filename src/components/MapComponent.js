@@ -69,11 +69,16 @@ class MapComponent extends React.Component {
       0.1: '#ff1493', 0.2: '#ff1493', 0.4: '#0000ff',
       0.6: '#ffffff', 0.8: '#ffffff', 1.0: '#ffffff'
     };
+
+    const { selectedListItem } = this.props;
+    const backgroundMapUrl = selectedListItem === 'Point Layer' ? 
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' :
+    'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png'
     return (
-    <Map center={position} zoom={this.state.zoom} style={{minHeight: '100%', minWidth: '100%', filter: 'brightness(1.75)'}}>
+    <Map center={position} zoom={this.state.zoom} style={{minHeight: '100%', minWidth: '100%'}}>
       <TileLayer
         attribution={'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}
-        url={'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png'} 
+        url={backgroundMapUrl} 
         />
         <HeatmapLayer
           radius={7}

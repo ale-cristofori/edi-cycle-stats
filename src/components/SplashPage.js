@@ -120,7 +120,8 @@ class SplashPage extends Component {
       years: null,
       severity: null,
       geom: null,
-      donutData :[
+      selectedListItem: null,
+      donutData : [
         {year: 2005, count: 134},
         {year: 2006, count: 148},
         {year: 2007, count: 156},
@@ -146,6 +147,7 @@ class SplashPage extends Component {
     }
     this.onSelectYear = this.onSelectYear.bind(this);
     this.onResetPieChart = this.onResetPieChart.bind(this);
+    this.onSelectListItem = this.onSelectListItem.bind(this);
     this.pieChartRef = React.createRef();
   }
 
@@ -238,6 +240,13 @@ class SplashPage extends Component {
     this.pieChartRef.current.onResetPieChart()
   }
 
+  onSelectListItem(e) {
+    var selectedListItem = e.target.textContent;
+    this.setState({
+      selectedListItem
+    });
+  }
+
     render() { 
       const { classes } = this.props;
         return (
@@ -266,14 +275,14 @@ class SplashPage extends Component {
               open={this.state.open}>
               <Divider />
               <List className={classes.mainList}>
-              <MainListItems />
+              <MainListItems onSelectListItem={this.onSelectListItem}/>
               </List>
           </Drawer>
         <div className={classes.GridRoot}>
         <Grid container spacing={24} style={{margin: '0px'}}>
             <Grid item xs={12} md={8} style={{minHeight: '300px'}}>
               <Paper className={classes.mapPaper} elevation={2}>
-              <MapComponent accPoints={this.state.accPoints} heatMapData={this.state.hmData} hmConfig={this.state.hmConfig}/>
+              <MapComponent accPoints={this.state.accPoints} heatMapData={this.state.hmData} hmConfig={this.state.hmConfig} selectedListItem={this.state.selectedListItem}/>
               </Paper>
             </Grid>
             <Grid item xs={12} md={4} className={classes.chartsGridContainer}>

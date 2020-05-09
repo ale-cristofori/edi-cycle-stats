@@ -9,8 +9,11 @@ import LayersIcon from '@material-ui/icons/Layers';
 
 export class MainListItems extends React.Component {
 
-  state = {
-    anchorEl: null,
+  constructor(props) {
+    super(props);
+    this.state = {
+      anchorEl: null
+    }
   }
 
   handleClick = event => {
@@ -23,6 +26,7 @@ export class MainListItems extends React.Component {
 
   render() {
     const { anchorEl } = this.state;
+    const { onSelectListItem } = this.props;
     return (
       <div>
           <ListItem button
@@ -41,9 +45,9 @@ export class MainListItems extends React.Component {
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
         >
-          <MenuItem onClick={this.handleClose}>Point Layer</MenuItem>
-          <MenuItem onClick={this.handleClose}>Theme</MenuItem>
-          <MenuItem onClick={this.handleClose}>Placeholder</MenuItem>
+          <MenuItem onClick={onSelectListItem}>Point Layer</MenuItem>
+          <MenuItem onClick={onSelectListItem}>Theme</MenuItem>
+          <MenuItem onClick={onSelectListItem}>Placeholder</MenuItem>
         </Menu>
         </div>
     );
