@@ -16,6 +16,7 @@ import MapComponent from './MapComponent';
 import Donut from './PieChart/DonutComponent';
 import Chart from './BarChart/ChartComponent';
 
+
 const styles = theme => ({
     root: {
       flexGrow: 1,
@@ -121,6 +122,7 @@ class SplashPage extends Component {
       severity: null,
       geom: null,
       selectedListItem: null,
+      currentBgTheme: 'dark',
       donutData : [
         {year: 2005, count: 134},
         {year: 2006, count: 148},
@@ -147,7 +149,6 @@ class SplashPage extends Component {
     }
     this.onSelectYear = this.onSelectYear.bind(this);
     this.onResetPieChart = this.onResetPieChart.bind(this);
-    this.onSelectListItem = this.onSelectListItem.bind(this);
     this.pieChartRef = React.createRef();
   }
 
@@ -240,14 +241,15 @@ class SplashPage extends Component {
     this.pieChartRef.current.onResetPieChart()
   }
 
-  onSelectListItem(e) {
-    var selectedListItem = e.target.textContent;
+  onSelectBgTheme(closeMenuList) {
+    const currentBgTheme = this.state.currentBgTheme === 'dark' ? 'light' : 'dark';
     this.setState({
-      selectedListItem
+      currentBgTheme
     });
+    closeMenuList();
   }
 
-    render() { 
+  render() { 
       const { classes } = this.props;
         return (
       <div className={classes.root}>
@@ -275,14 +277,14 @@ class SplashPage extends Component {
               open={this.state.open}>
               <Divider />
               <List className={classes.mainList}>
-              <MainListItems onSelectListItem={this.onSelectListItem}/>
+              <MainListItems onSelectBgTheme={this.onSelectBgTheme.bind(this)} currentBgTheme={this.state.currentBgTheme}/>
               </List>
           </Drawer>
         <div className={classes.GridRoot}>
         <Grid container spacing={24} style={{margin: '0px'}}>
             <Grid item xs={12} md={8} style={{minHeight: '300px'}}>
               <Paper className={classes.mapPaper} elevation={2}>
-              <MapComponent accPoints={this.state.accPoints} heatMapData={this.state.hmData} hmConfig={this.state.hmConfig} selectedListItem={this.state.selectedListItem}/>
+              <MapComponent accPoints={this.state.accPoints} heatMapData={this.state.hmData} hmConfig={this.state.hmConfig} currentBgTheme={this.state.currentBgTheme}/>
               </Paper>
             </Grid>
             <Grid item xs={12} md={4} className={classes.chartsGridContainer}>

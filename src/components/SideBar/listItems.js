@@ -26,7 +26,8 @@ export class MainListItems extends React.Component {
 
   render() {
     const { anchorEl } = this.state;
-    const { onSelectListItem } = this.props;
+    const { onSelectBgTheme, currentBgTheme } = this.props;
+    const selectBgTheme = currentBgTheme === 'dark' ? 'light' : 'dark';
     return (
       <div>
           <ListItem button
@@ -45,9 +46,9 @@ export class MainListItems extends React.Component {
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
         >
-          <MenuItem onClick={onSelectListItem}>Point Layer</MenuItem>
-          <MenuItem onClick={onSelectListItem}>Theme</MenuItem>
-          <MenuItem onClick={onSelectListItem}>Placeholder</MenuItem>
+          <MenuItem onClick={ (e)  => {onSelectBgTheme(this.handleClose)} }>{selectBgTheme.charAt(0).toUpperCase() + selectBgTheme.slice(1)} Map Background</MenuItem>
+          <MenuItem>Theme</MenuItem>
+          <MenuItem>Placeholder</MenuItem>
         </Menu>
         </div>
     );
