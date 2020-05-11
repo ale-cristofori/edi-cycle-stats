@@ -1,6 +1,6 @@
 import React from 'react';
 import "leaflet/dist/leaflet.css";
-import { Map, TileLayer, Circle } from 'react-leaflet';
+import { Map, TileLayer, Circle, Popup} from 'react-leaflet';
 import HeatmapLayer from 'react-leaflet-heatmap-layer';
 
 class MapComponent extends React.Component {
@@ -12,6 +12,7 @@ class MapComponent extends React.Component {
         lng: -3.198953,
         zoom: 12,
       }
+      this.handleZoomChange = this.handleZoomChange.bind(this);
 
       this.geojsonMarkerOptions = {
         radius: 3,
@@ -21,6 +22,13 @@ class MapComponent extends React.Component {
         opacity: 1,
         fillOpacity: 0.8
       };
+    }
+
+    handleZoomChange = (e) => {
+      const zoom = e.target.getZoom();
+      this.setState({
+        zoom
+      });
     }
 
     getCirclesStyle(type) {
@@ -98,7 +106,17 @@ class MapComponent extends React.Component {
     let circlesLayer = null;
     
     if(!Array.isArray(this.props.accPoints) ) {
-      
+      const radius = (zoom) => {
+        let radius;
+        if (zoom < 15) {
+          radius = zoom
+        } else if (zoom === 15) {
+          radius = zoom / 2
+        } else if (zoom > 15){
+          radius = zoom / 5
+        }
+        return radius
+      }
       circlesLayer = this.props.accPoints.data.accidents.map((item, index) => { 
         const colorMap = {
           'Slight': 'green',
@@ -111,7 +129,8 @@ class MapComponent extends React.Component {
         stroke={false}
         fillColor={colorMap[item.properties.casualty_severity]} 
         fillOpacity={1}
-        radius={10} />} )
+        radius={ radius(this.state.zoom)}>
+          <Popup>Severity: {item.properties.casualty_severity} Year: {item.properties.year}</Popup></Circle>} )
     }
 
     const heatMapLayer = <HeatmapLayer
@@ -127,7 +146,7 @@ class MapComponent extends React.Component {
     const overlay = currentBgTheme === 'light' ? circlesLayer : heatMapLayer;
 
     return (
-    <Map center={position} zoom={this.state.zoom} style={{minHeight: '100%', minWidth: '100%'}}>
+    <Map center={position} zoom={this.state.zoom} style={{minHeight: '100%', minWidth: '100%'}} onzoom={this.handleZoomChange}>
       <TileLayer
         attribution={'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}
         url={backgroundMapUrl} 
