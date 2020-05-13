@@ -2,6 +2,8 @@ import React from 'react';
 import "leaflet/dist/leaflet.css";
 import { Map, TileLayer, Circle, Popup} from 'react-leaflet';
 import HeatmapLayer from 'react-leaflet-heatmap-layer';
+import * as d3 from "d3";
+
 
 class MapComponent extends React.Component {
 
@@ -41,6 +43,21 @@ class MapComponent extends React.Component {
         fillOpacity: 0.8
       }
     }
+
+    calculateRadius(zoom) {
+      let radius;
+      if (zoom < 15) {
+        radius = 13
+      } else if (zoom === 15) {
+        radius = zoom / 2
+      } else if (zoom === 16) {
+        radius = zoom / 3
+      } else if (zoom > 16) {
+        radius = zoom / 6.5
+      }
+      return radius;
+    }
+
 
   componentDidMount() {
     const geojsonMarkerOptions = {
@@ -85,6 +102,8 @@ class MapComponent extends React.Component {
         max: 8,
         data: this.props.heatMapData
       };
+      d3.select(".leaflet-overlay-pane")
+        .attr("class","shadow leaflet-overlay-pane leaflet-pane");
   }
 
   render() {
@@ -106,30 +125,20 @@ class MapComponent extends React.Component {
     let circlesLayer = null;
     
     if(!Array.isArray(this.props.accPoints) ) {
-      const radius = (zoom) => {
-        let radius;
-        if (zoom < 15) {
-          radius = zoom
-        } else if (zoom === 15) {
-          radius = zoom / 2
-        } else if (zoom > 15){
-          radius = zoom / 5
-        }
-        return radius
-      }
+
       circlesLayer = this.props.accPoints.data.accidents.map((item, index) => { 
         const colorMap = {
           'Slight': 'green',
           'Serious': 'yellow',
           'Fatal': 'red'
         }
-        return <Circle 
+        return <Circle
         key={index} 
         center={[item.geometry.coordinates[1], item.geometry.coordinates[0]]} 
         stroke={false}
         fillColor={colorMap[item.properties.casualty_severity]} 
         fillOpacity={1}
-        radius={ radius(this.state.zoom)}>
+        radius={ this.calculateRadius(this.state.zoom) }>
           <Popup>Severity: {item.properties.casualty_severity} Year: {item.properties.year}</Popup></Circle>} )
     }
 
