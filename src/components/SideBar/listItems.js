@@ -46,9 +46,7 @@ export class MainListItems extends React.Component {
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
         >
-          <MenuItem onClick={ (e)  => {onSelectBgTheme(this.handleClose)} }>{selectBgTheme.charAt(0).toUpperCase() + selectBgTheme.slice(1)} Map Background</MenuItem>
-          <MenuItem>Theme</MenuItem>
-          <MenuItem>Placeholder</MenuItem>
+          <MenuItem onClick={ (e)  => {onSelectBgTheme(this.handleClose)} }>{selectBgTheme.charAt(0).toUpperCase() + selectBgTheme.slice(1)} Map Theme</MenuItem>
         </Menu>
         </div>
     );

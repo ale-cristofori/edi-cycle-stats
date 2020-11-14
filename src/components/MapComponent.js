@@ -117,10 +117,19 @@ class MapComponent extends React.Component {
       0.6: '#ffffff', 0.8: '#ffffff', 1.0: '#ffffff'
     };
 
+    let baseMapCSSStyle = {minHeight: '100%', minWidth: '100%'};
+    
     const { currentBgTheme } = this.props;
     const backgroundMapUrl = currentBgTheme === 'light' ? 
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' :
     'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png';
+
+    const attribution = currentBgTheme === 'light' ? 
+    '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' :
+    'Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.';
+
+    baseMapCSSStyle = currentBgTheme === 'light' ? baseMapCSSStyle :
+    {...baseMapCSSStyle, filter: 'brightness(1.75)'}
 
     let circlesLayer = null;
     
@@ -155,9 +164,9 @@ class MapComponent extends React.Component {
     const overlay = currentBgTheme === 'light' ? circlesLayer : heatMapLayer;
 
     return (
-    <Map center={position} zoom={this.state.zoom} style={{minHeight: '100%', minWidth: '100%'}} onzoom={this.handleZoomChange}>
+    <Map center={position} zoom={this.state.zoom} style={baseMapCSSStyle} onzoom={this.handleZoomChange}>
       <TileLayer
-        attribution={'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}
+        attribution={attribution}
         url={backgroundMapUrl} 
         />
         {overlay}
